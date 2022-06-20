@@ -4,7 +4,7 @@ module.exports.isLoggedIn = (req, res, next) => {
         console.log(req.originalUrl);
         // store the url they are requesting
         req.session.returnTo = req.originalUrl ;
-        req.flash('error', 'You mush be signed in');
+        req.flash('error', 'You must be signed in');
         return res.redirect('/login');
     }
     next();
