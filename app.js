@@ -14,10 +14,8 @@ const hotelsRoutes = require('./routes/hotels');
 const reviewsRoutes = require('./routes/reviews');
 
 // configuring passport
-// allows us to plug in multiple strategies for auth
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-// configuring passport
 
 mongoose.connect('mongodb://localhost:27017/hotels');
 
@@ -59,19 +57,12 @@ app.use(passport.initialize());
 // for persistent login sessions
 // this needs to be before session
 app.use(passport.session());
-// we would like passport to use the local strategy that we downloaded in required
-// and for that LS the auth method it's going to be located on our user model and it's called authenticate
 passport.use(new LocalStrategy(User.authenticate()));
-// this is telling passport of to serialize a user
-// serialize: how do we store a user in the session
 passport.serializeUser(User.serializeUser());
-// deserialize: how do we get a user out of that session
 passport.deserializeUser(User.deserializeUser());
-// passport
 
 app.use((req, res, next) => {
     console.log(req.session);
-    // we have access to them on every single template
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');

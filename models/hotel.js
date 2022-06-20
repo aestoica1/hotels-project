@@ -16,14 +16,8 @@ const HotelSchema = new Schema({
     ]
 });
 
-// Mongoose Middleware To Delete Associated Reviews afterwards when we delete a hotel
-// findByIdAndDelete triggers the following middleware: findOneAndDelete()
-// it's a query middleware and it's executed after the hooked method and all of its pre middleware have completed
 HotelSchema.post('findOneAndDelete', async function(doc) {
-    // what was deleted was passed to our middleware function(doc)
-    // so if there were reviews in the array we can delete them based upon that particular object ids
    if (doc) {
-    // delete all reviews where their id field is in our doc that was just deleted in its review array
        await Review.deleteMany(({
            _id: {
                $in:doc.reviews,
